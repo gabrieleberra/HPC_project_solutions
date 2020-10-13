@@ -14,17 +14,16 @@
 #include <time.h>
 #include <limits.h>
 
-#define CACHE_MIN (128)         /* smallest cache */
+#define CACHE_MIN (128)         /* smallest cache  (128)*/
 #define CACHE_MAX (16 * 1024 * 1024) /* largest cache */
-#define	SAMPLE	10              /* to get larger time sample */
+#define SAMPLE  10              /* to get larger time sample */
 
-int x[CACHE_MAX];               /* stride thru this array */
+int x[CACHE_MAX];           /* stride thru this array */
 
 /**
  * Get the number of CPU ticks since last booting the computer
  */
-inline unsigned long long getCPUTick (void)
-{
+inline unsigned long long getCPUTick (void) {
     unsigned lo, hi;
     asm volatile ("rdtsc" : "=a" (lo), "=d" (hi));
     return (unsigned long long) hi << 32 | lo;
@@ -33,8 +32,7 @@ inline unsigned long long getCPUTick (void)
 /**
  * Get the current system time in milliseconds
  */
-unsigned long timeGetTime (void)
-{
+unsigned long timeGetTime (void) {
     /* Using Linux Time Functions To Determine Time */
     struct timeval tv;
     gettimeofday (&tv, 0);
@@ -45,8 +43,7 @@ unsigned long timeGetTime (void)
  * Determine the CPU clock speed.
  * @param nTime The time in milliseconds used to perform the measurement
  */
-unsigned long getCPUSpeed (long nTime)
-{
+unsigned long getCPUSpeed (long nTime) {
     long long timeStart, timeStop;
     long long startTick, endTick;
 
@@ -57,11 +54,9 @@ unsigned long getCPUSpeed (long nTime)
     while (timeGetTime () == timeStart)
         timeStart = timeGetTime();
 
-    while (1)
-    {
+    while (1) {
         timeStop = timeGetTime ();
-        if ((timeStop - timeStart) > 1)
-        {
+        if ((timeStop - timeStart) > 1) {
             startTick = getCPUTick ();
             break;
         }
@@ -69,23 +64,20 @@ unsigned long getCPUSpeed (long nTime)
 
     /* Calculate Stop Time And End Tick */
     timeStart = timeStop;
-    while (1)
-    {
+    while (1) {
         timeStop = timeGetTime();
-        if ((timeStop - timeStart) > nTime)
-        {
+        if ((timeStop - timeStart) > nTime) {
             endTick = getCPUTick();
             break;
         }
-     }
+    }
 
-     /* Return The Processors Speed In Hertz */
-     return (unsigned long) ((endTick - startTick) + (overhead));
+    /* Return The Processors Speed In Hertz */
+    return (unsigned long) ((endTick - startTick) + (overhead));
 }
 
 
-int main ()
-{
+int main () {
     int register i, index, stride, limit, temp;
     long steps, tsteps;
     int csize;
@@ -99,10 +91,8 @@ int main ()
     /* The CPU speed in Hz */
     unsigned long nHz = getCPUSpeed (1000);
 
-    for (csize = CACHE_MIN; csize <= CACHE_MAX; csize <<= 1)
-    {
-        for (stride = 1; stride <= csize / 2; stride <<= 1)
-        {
+    for (csize = CACHE_MIN; csize <= CACHE_MAX; csize <<= 1) {
+        for (stride = 1; stride <= csize / 2; stride <<= 1) {
             /* init cycles counter */
             cycles = 0;
 
@@ -110,17 +100,14 @@ int main ()
             limit = csize - stride + 1;
             steps = 0;
 
-            do
-            {		
+            do {
                 cycles0 = getCPUTick ();
-                for (i = SAMPLE * stride; i != 0; i--)
-                {
+                for (i = SAMPLE * stride; i != 0; i--) {
                     /* larger sample */
-                    for (index = 0; index < limit; index += stride)
-                    {
+                    for (index = 0; index < limit; index += stride) {
                         /* cache access */
                         x[index] = x[index] + 1;
-                    }	
+                    }
                 }
 
                 /* count while loop iterations */
@@ -135,15 +122,12 @@ int main ()
             tsteps = 0;
 
             /* repeat until same # iterations as above */
-            do
-            {
+            do {
                 cycles0 = getCPUTick ();
-                for (i = SAMPLE * stride; i != 0; i--)
-                {
+                for (i = SAMPLE * stride; i != 0; i--) {
                     /* larger sample */
 
-                    for (index = 0; index < limit; index += stride)
-                    {
+                    for (index = 0; index < limit; index += stride) {
                         /* dummy code */
                         temp = temp + index;
                     }
@@ -155,9 +139,9 @@ int main ()
             } while (tsteps < steps);
 
             printf ("Size:%7lu Stride:%7lu read+write:%10.3f ns, sec = %6.3f, cycles = %lld steps = %6.0f\n",
-                csize * sizeof (int), stride * sizeof (int),
-                (double) sec * 1e9 / (steps * SAMPLE * stride * ((limit - 1) / stride + 1)),
-                sec, cycles, (double) steps);
+                    csize * sizeof (int), stride * sizeof (int),
+                    (double) sec * 1e9 / (steps * SAMPLE * stride * ((limit - 1) / stride + 1)),
+                    sec, cycles, (double) steps);
             fflush(stdout);
         }
 
