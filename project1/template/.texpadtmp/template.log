@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.9.24)  13 OCT 2020 11:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.9.24)  13 OCT 2020 17:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -761,33 +761,37 @@ Package pdftex.def Info: Figures/generic.pdf used on input line 88.
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\hfill' on input line 110.
 
-[4] [5] <Figures/timing.pdf, id=123, 845.1575pt x 597.23125pt>
+[4] [5] <Figures/timing.pdf, id=124, 845.1575pt x 597.23125pt>
 File: Figures/timing.pdf Graphic file (type pdf)
  <use Figures/timing.pdf>
-Package pdftex.def Info: Figures/timing.pdf used on input line 142.
+Package pdftex.def Info: Figures/timing.pdf used on input line 143.
 (pdftex.def)             Requested size: 375.57779pt x 265.4071pt.
- <Figures/cluster_performance.pdf, id=124, 597.23125pt x 845.1575pt>
-File: Figures/cluster_performance.pdf Graphic file (type pdf)
- <use Figures/cluster_performance.pdf>
-Package pdftex.def Info: Figures/cluster_performance.pdf used on input line 149.
-(pdftex.def)             Requested size: 375.57779pt x 531.49774pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 154.
-[6 <./Figures/timing.pdf, page is rotated 90 degrees>] [7 <./Figures/cluster_performance.pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 154.
+<Figures/cluster_performance.pdf, id=125, 597.23125pt x 845.1575pt>
+File: Figures/cluster_performance.pdf Graphic file (type pdf)
+ <use Figures/cluster_performance.pdf>
+Package pdftex.def Info: Figures/cluster_performance.pdf used on input line 150.
+(pdftex.def)             Requested size: 352.10284pt x 498.27751pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 156.
+[6] [7 <./Figures/timing.pdf, page is rotated 90 degrees> <./Figures/cluster_performance.pdf>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 156.
  (/Users/Eddie/GoogleDrive/Msc_Ga/HPC/HPC_project_solutions/project1/template/.texpadtmp/template.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 154.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 154.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 156.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 156.
 Package rerunfilecheck Info: File `template.out' has not changed.
 (rerunfilecheck)             Checksum: <no file>.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 154.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 156.
  ) 
 Here is how much of TeX's memory you used:
  10554 strings out of 493117
@@ -798,10 +802,10 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  41i,10n,55p,1569b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on /Users/Eddie/GoogleDrive/Msc_Ga/HPC/HPC_project_solutions/project1/template/.texpadtmp/template.pdf (7 pages, 437471 bytes).
+Output written on /Users/Eddie/GoogleDrive/Msc_Ga/HPC/HPC_project_solutions/project1/template/.texpadtmp/template.pdf (7 pages, 437973 bytes).
 PDF statistics:
- 212 PDF objects out of 1000 (max. 8388607)
- 177 compressed objects within 2 object streams
+ 213 PDF objects out of 1000 (max. 8388607)
+ 178 compressed objects within 2 object streams
  28 named destinations out of 1000 (max. 500000)
  114 words of extra memory for PDF output out of 10000 (max. 10000000)
 

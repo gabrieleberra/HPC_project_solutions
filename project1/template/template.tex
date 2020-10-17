@@ -132,11 +132,12 @@ In this second part of the implementation, I decided to tackle the shortcomings 
 
 After defining all the cases in which I could have an irregular block size (specifically, if $ib$ and $jb$, the indices moving between the rows and the column of the blocks, as well as $kb$ were equal to their maximum value), I also had to modify the $k$ used inside the innermost loop. Indeed, the value of $k$ has to be reduced in case we are in one of the irregular blocks, in order to iterate correctly given the new size. 
 
-\subsection{Possible improvement}
+\subsection{Possible improvements}
 As I said at the beginning of this section, the most important part of the blocked matrix multiplication strategy is the choice of the block size, which has to be coherent with the dimension of the caches (L1, and also L2 and L3), in order to minimize the cache misses. However, I think that there are also other possible improvements depending - in particular - on the way the different blocks sizes are handled. Indeed, I think that, for some matrix sizes, instead of having a small irregular block at the end, it could be more beneficial to have two or three relatively small blocks (or, at least, this emerged after some preliminary testing). All considered, even if my performance was better than the one obtained by the naive matrix multiplication, it is still far away from the one achieved by BLAS. However, it is also rather stable regardless of the matrix size (again with respect to the naive version) and this can categorize it as a somehow more reliable implementation.
 
-\subsection{Performance on cluster}
-In this section I am going to present the results obtained on the cluster. In figure \ref{fig:clustyPerfGraph} we can first notice - of course - the big difference of my block matrix multiplication and the naive matrix multiplication with respect to the BLAS but, my goal was to surpass the naive matrix multiplication that, as we can see, is performing wors - in terms of performance calculated in GFlops/s - with respect to the blocked matrix multiplication. As we can see in the figure  \ref{fig:clustyPerf} my block matrix multiplication has an average percentage peak of 6.84559 reached with a block size of 19 chosen after a try and error process with different block sizes.
+\subsection{Performance on the ICS Cluster}
+In this section I am going to present the results obtained on the cluster. In figure \ref{fig:clustyPerfGraph} we can first notice - of course - the big difference between my block matrix multiplication and the naive matrix multiplication with respect to the BLAS. However, my goal was to perform than the naive matrix multiplication and I think that my blocked matrix performed better than the latter (as we can see in Figure \ref{fig:clustyPerfGraph}, where the performance in GFlops/s is plotted against different matrix sizes). My implementation has an average performance peak of 6.84559, reached after choosing a block size of 19 after different simulations, in a trial and error process (more details can be seen in Figure \ref{fig:clustyPerf}). Finally, we can conclude that my implementation is also relatively stabler with respect to the naive matrix multiplication: it achieves more or less the same performance, except for a matrix size of 512, in which we have a lower number of GFlops/s (roughly 65\% of what we achieve in the others).
+
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.8\textwidth]{Figures/timing.pdf}
@@ -146,7 +147,8 @@ In this section I am going to present the results obtained on the cluster. In fi
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Figures/cluster_performance.pdf}
+	\includegraphics[width=0.75\textwidth]{Figures/cluster_performance.pdf}
+	\vskip -0.9in
 	\caption{Results of \textit{dgemm-blocked.c} on the USI ICS cluster.}
 	\label{fig:clustyPerf}
 \end{figure}
