@@ -19,7 +19,7 @@ unsigned long get_time () {
 int main (int argc, char** argv) {
 	png_data* pPng = png_create (IMAGE_WIDTH, IMAGE_HEIGHT);
 
-	double x, y, x2, y2, cx, cy, temp;   // x real, y imaginary
+	double x, y, x2, y2, cx, cy;   // x real, y imaginary
 	cy = MIN_Y;
 
 	double fDeltaX = (MAX_X - MIN_X) / (double) IMAGE_WIDTH;
@@ -32,44 +32,43 @@ int main (int argc, char** argv) {
 
 	n = 0;
 	// do the calculation
-	#pragma omp parallel
+	#pragma omp parallel firstprivate(x,x2,y,y2,cx,fDeltaY,fDeltaX,i,j,n)
 	{
-		#pragma omp for private(x,y,temp) shared(cx,cy) schedule(dynamic) //num_threads(8)
-		{
-			for (j = 0; j < IMAGE_HEIGHT; j++) {
-				cx = MIN_X;
-				#pragma omp for
-				{
-					for (i = 0; i < IMAGE_WIDTH; i++) {
-						n = 0;
-						x = 0;
-						y = 0;
-						//x2 = x * x;
-						//y2 = y * y;
+		#pragma omp for reduction(+:nTotalIterationsCount) schedule(dynamic)
+		for (j = 0; j < IMAGE_HEIGHT; j++) {
+			cx = MIN_X;
+			for (i = 0; i < IMAGE_WIDTH; i++) {
+				x = cx;
+				y = cy;
+				x2 = x * x;
+				y2 = y * y;
 
-						// compute the orbit z, f(z), f^2(z), f^3(z), ...
-						// count the iterations until the orbit leaves the circle |z|=2.
-						// stop if the number of iterations exceeds the bound MAX_ITERS.
-						// >>>>>>>> CODE IS MISSING
-						while ((x * x + y * y) < 4 && n < MAX_ITERS) {
-							temp = x * x - y * y + cx;
-							y = 2 * x * y + cy;
-							x = temp;
-							n += 1;
-						}
-						// <<<<<<<< CODE IS NISSING
-						// n indicates if the point belongs to the mandelbrot set
-						// plot the number of iterations at point (i, j)
-						int c = ((long) n * 255) / MAX_ITERS;
-						png_plot (pPng, i, j, c, c, c);
-						cx += fDeltaX;
-						nTotalIterationsCount += n;
-					}
-					cy += fDeltaY;
+				// compute the orbit z, f(z), f^2(z), f^3(z), ...
+				// count the iterations until the orbit leaves the circle |z|=2.
+				// stop if the number of iterations exceeds the bound MAX_ITERS.
+
+				n = 0;
+				while ((x2 + y2) < 4 && n < MAX_ITERS) {
+					y = 2 * x * y + cy;
+					x = x2 - y2 + cx;
+					x2 = x * x;
+					y2 = y * y;
+					n += 1;
 				}
+				nTotalIterationsCount += n;
+				// n indicates if the point belongs to the mandelbrot set
+				// plot the number of iterations at point (i, j)
+
+				int c = ((long) n * 255) / MAX_ITERS;
+				png_plot (pPng, i, j, c, c, c);
+				cx += fDeltaX;
+
+
 			}
+			cy += fDeltaY;
 		}
 	}
+
 
 	unsigned long nTimeEnd = get_time ();
 
