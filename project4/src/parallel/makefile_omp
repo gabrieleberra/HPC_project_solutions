@@ -1,0 +1,53 @@
+# by default select gcc
+CXX=g++
+CXXFLAGS=-O3 -fopenmp
+
+# if on a cray system, set flags according to the compilation enviroment
+ifeq ($(PE_ENV),GNU)
+	CXX=CC
+	CXXFLAGS=-O3 -fopenmp
+endif
+ifeq ($(PE_ENV),CRAY)
+	CXX=CC
+	CXXFLAGS=-O3
+	CXXFLAGS+=-h list=a
+endif
+ifeq ($(PE_ENV),INTEL)
+	CXX=CC
+	CXXFLAGS=-O3 -openmp
+endif
+ifeq ($(PE_ENV),PGI)
+	CXX=CC
+	CXXFLAGS=-O3 -mp
+endif
+
+SOURCES = stats.cpp data.cpp operators_omp.cpp linalg_omp.cpp
+HEADERS = stats.h   data.h   operators.h   linalg.h
+OBJ     = stats.o   data.o   operators.o   linalg.o
+
+.SUFFIXES: .cpp
+
+all: main_omp
+
+stats.o: stats.cpp stats.h
+	$(CXX) $(CXXFLAGS) $(IFLAGS) -c stats.cpp -o stats.o
+
+data.o: data.cpp data.h
+	$(CXX) $(CXXFLAGS) $(IFLAGS) -c data.cpp -o data.o
+
+operators.o: operators_omp.cpp operators.h
+	$(CXX) $(CXXFLAGS) $(IFLAGS) -c operators_omp.cpp -o operators_omp.o
+
+linalg.o: linalg_omp.cpp linalg.h
+	$(CXX) $(CXXFLAGS) $(IFLAGS) -c linalg_omp.cpp -o linalg_omp.o
+
+main: $(OBJ) main_omp.cpp $(HEADERS)
+	$(CXX) $(CXXFLAGS) *.o main_omp.cpp -o main_omp
+
+clean:
+	rm -f main_omp
+	rm -f *.o
+	rm -f *.i
+	rm -f *.lst
+	rm -f output.*
+

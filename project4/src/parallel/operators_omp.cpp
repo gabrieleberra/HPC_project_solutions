@@ -9,6 +9,7 @@
 #include "data.h"
 #include "operators.h"
 #include "stats.h"
+#include <stdio.h>
 
 namespace operators {
 
@@ -35,9 +36,10 @@ void diffusion(const data::Field &s, data::Field &f) {
     int jend  = nx - 1;
 
     // the interior grid points
+    #pragma omp parallel for
     for (int j = 1; j < jend; j++) {
         for (int i = 1; i < iend; i++) {
-            f(i, j) = -(4 + alpha) * s(i, j) + s(i - 1, j) + s(i + 1, j) + s(i, j - 1) + s(i, j + 1) + beta * s(i, j) * (1.0 - s(i, j)) + alpha * y_old(i, j);
+            f(i, j) = -(4. + alpha) * s(i, j) + s(i - 1, j) + s(i + 1, j) + s(i, j - 1) + s(i, j + 1) + beta * s(i, j) * (1.0 - s(i, j)) + alpha * y_old(i, j);
 
         }
     }
@@ -56,8 +58,8 @@ void diffusion(const data::Field &s, data::Field &f) {
     // the west boundary
     {
         int i = 0;
-        for (intj = 1; j < jend; j++) {
-            f(i, j) = -(4 + alpha) * s(i, j) + bndW[j] + s(i + 1, j) + s(i, j - 1) + s(i, j + 1) + beta * s(i, j) * (1.0 - s(i, j)) + alpha * y_old(i, j);
+        for (int j = 1; j < jend; j++) {
+            f(i, j) = -(4. + alpha) * s(i, j) + bndW[j] + s(i + 1, j) + s(i, j - 1) + s(i, j + 1) + beta * s(i, j) * (1.0 - s(i, j)) + alpha * y_old(i, j);
         }
 
     }
@@ -75,12 +77,11 @@ void diffusion(const data::Field &s, data::Field &f) {
         }
 
         // inner north boundary
-        for (int j = 1; j < jend; j++) {
-            for (int i = 1; i < iend; i++) {
-                f(i, j) = -(4 + alpha) * s(i, j) + s(i - 1, j) + s(i + 1, j) + s(i, j - 1) + bndN[i] + beta * s(i, j) * (1.0 - s(i, j)) + alpha * y_old(i, j); // bndN[i]?
+        for (int i = 1; i < iend; i++) {
+            f(i, j) = -(4. + alpha) * s(i, j) + s(i - 1, j) + s(i + 1, j) + s(i, j - 1) + bndN[i] + beta * s(i, j) * (1.0 - s(i, j)) + alpha * y_old(i, j);
 
-            }
         }
+
 
         {
             int i = nx - 1; // NE corner
@@ -104,12 +105,11 @@ void diffusion(const data::Field &s, data::Field &f) {
         }
 
         // inner south boundary
-        for (int j = 1; j < jend; j++) {
-            for (int i = 1; i < iend; i++) {
-                f(i, j) = -(4 + alpha) * s(i, j) + s(i - 1, j) + s(i + 1, j) + bndS[i] + s(i, j + 1) + beta * s(i, j) * (1.0 - s(i, j)) + alpha * y_old(i, j); // bndS[i]
+        for (int i = 1; i < iend; i++) {
+            f(i, j) = -(4 + alpha) * s(i, j) + s(i - 1, j) + s(i + 1, j) + bndS[i] + s(i, j + 1) + beta * s(i, j) * (1.0 - s(i, j)) + alpha * y_old(i, j);
 
-            }
         }
+
 
         {
             int i = nx - 1; // SE corner
