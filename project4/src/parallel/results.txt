@@ -1,0 +1,34 @@
+
+Task 2: linear algebra kernel
+
+========================================================================
+                      Welcome to mini-stencil!
+version   :: OpenMP Parallel C++
+threads   :: 8
+mesh      :: 128 * 128 dx = 0.00787402
+time      :: 100 time steps from 0 .. 0.01
+iteration :: CG 200, Newton 50, tolerance 1e-06
+========================================================================
+------------------------------------------------------------------------
+simulation took 0.380234 seconds
+7565 conjugate gradient iterations, at rate of 19895.6 iters/second
+830 newton iterations
+------------------------------------------------------------------------
+
+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+========================================================================
+                      Welcome to mini-stencil!
+version   :: OpenMP Parallel C++
+threads   :: 8
+mesh      :: 256 * 256 dx = 0.00392157
+time      :: 100 time steps from 0 .. 0.01
+iteration :: CG 200, Newton 50, tolerance 1e-06
+========================================================================
+------------------------------------------------------------------------
+simulation took 1.61992 seconds
+14101 conjugate gradient iterations, at rate of 8704.76 iters/second
+830 newton iterations
+------------------------------------------------------------------------
+
+How about the other loops? If I parallelize the other for loops the performance is compromised.

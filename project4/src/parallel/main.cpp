@@ -20,8 +20,8 @@
 #include <stdio.h>
 
 #include "data.h"
-#include "linalg_omp.h"
-#include "operators_omp.h"
+#include "linalg.h"
+#include "operators.h"
 #include "stats.h"
 
 using namespace data;
@@ -100,12 +100,11 @@ int main(int argc, char* argv[]) {
     int max_cg_iters     = 200;
     int max_newton_iters = 50;
     double tolerance     = 1.e-6;
-    num_threads = omp_set_num_threads(8);
 
     std::cout << "========================================================================" << std::endl;
     std::cout << "                      Welcome to mini-stencil!" << std::endl;
-    std::cout << "version   :: OpenMP Parallel C++" << std::endl;
-    std::cout << "threads   :: " << num_threads << std::endl;
+    std::cout << "version   :: C++ OpenMP" << std::endl;
+    std::cout << "threads   :: " << omp_get_max_threads() << std::endl;
     std::cout << "mesh      :: " << options.nx << " * " << options.nx << " dx = " << options.dx << std::endl;
     std::cout << "time      :: " << nt << " time steps from 0 .. " << options.nt*options.dt << std::endl;;
     std::cout << "iteration :: " << "CG "          << max_cg_iters

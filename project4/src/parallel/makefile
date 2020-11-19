@@ -27,7 +27,7 @@ OBJ     = stats.o   data.o   operators.o   linalg.o
 
 .SUFFIXES: .cpp
 
-all: main_omp
+all: main
 
 stats.o: stats.cpp stats.h
 	$(CXX) $(CXXFLAGS) $(IFLAGS) -c stats.cpp -o stats.o
@@ -41,11 +41,11 @@ operators.o: operators_omp.cpp operators.h
 linalg.o: linalg_omp.cpp linalg.h
 	$(CXX) $(CXXFLAGS) $(IFLAGS) -c linalg_omp.cpp -o linalg_omp.o
 
-main: $(OBJ) main_omp.cpp $(HEADERS)
-	$(CXX) $(CXXFLAGS) *.o main_omp.cpp -o main_omp
+main: $(OBJ) main.cpp $(HEADERS)
+	$(CXX) $(CXXFLAGS) *.o main.cpp -o main
 
 clean:
-	rm -f main_omp
+	rm -f main
 	rm -f *.o
 	rm -f *.i
 	rm -f *.lst
