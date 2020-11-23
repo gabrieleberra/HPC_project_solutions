@@ -7,7 +7,7 @@
  * CSCS/USI take no responsibility for the use of the enclosed  *
  * teaching material.                                           *
  *                                                              *
- * Purpose: Parallel maximum using a ping-pong                      *
+ * Purpose: Parallel maximum using a ping-pong                  *
  *                                                              *
  * Contents: C-Source                                           *
  *                                                              *
@@ -43,7 +43,8 @@ int main (int argc, char *argv[])
      * it receives from that neighbor, this is done n times with n = number of processes
      * all ranks will obtain the max.
      */
-        // Initialization fo neigborhood
+    
+    // Initialization fo neigborhood
     right = (my_rank + 1) % size;
     left = (my_rank -1 + size) % size;
 

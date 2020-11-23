@@ -116,10 +116,17 @@ int main (int argc, char** argv)
 	// assume there are 8 floating point operations per iteration
 	printf ("[Process %d] MFlop/s:                    %g\n", mpi_rank, nTotalIterationsCount * 8.0 / (double) (nTimeEnd - nTimeStart));
 
+
+	// Initialize MPI_Status and ierr
+	MPI_Status status;
+	int  ierr;
+
+	
 	// Send the data to the master
 	if (mpi_rank != 0)
 	{
 		// TODO: send local partition c to the master process
+		MPI_Send(c, (IMAGE_WIDTH/p.nx)*(IMAGE_HEIGHT/p.ny), MPI_INT, 0, 0, MPI_COMM_WORLD);
 	}
 	/****************************************************************************/
 	// Write the image
@@ -141,7 +148,16 @@ int main (int argc, char** argv)
 			Partition p1 = updatePartition(p, proc);
 			Domain d1 = createDomain(p1);
 
+
 			// TODO: receive partition of the process proc into array c (overwrite its data)
+			ierr = MPI_Recv(c, (IMAGE_WIDTH/p.nx)*(IMAGE_HEIGHT/p.ny), MPI_INT, proc, 0, MPI_COMM_WORLD, &status);
+			//printf("_-_-_-_-_-_-_-_-\n");
+
+			if (ierr != MPI_SUCCESS){
+				printf("Error in MPI_Recv() \n");
+				MPI_Abort(MPI_COMM_WORLD, 1);
+			}
+
 
 			// write the partition of the process proc
 			for (j = 0; j < d1.ny; j++) // HEIGHT
@@ -158,7 +174,7 @@ int main (int argc, char** argv)
 	}
 
 	//TODO: uncomment after you implement createPartition(int mpi_rank, int mpi_size)
-	//MPI_Comm_free(&p.comm);
+	MPI_Comm_free(&p.comm);
 	free(c);
 	MPI_Finalize();
 	return 0;

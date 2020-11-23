@@ -76,22 +76,6 @@ int main(int argc, char *argv[])
         data[i]=rank;
     }
 
-
-
-    /*
-    if (rank == 0){
-        for (int i = 0; i < DOMAINSIZE; i++) {
-            printf("\n");
-            for (int j = 0; j < DOMAINSIZE; j++) {
-                printf("%f \t", data[DOMAINSIZE * i + j]);
-            }
-        }
-        printf("\n");
-    }
-    */
-
-
-
     // TODO: set the dimensions of the processor grid and periodic boundaries in both dimensions
     dims[0]= 4;
     dims[1]= 4;
@@ -106,36 +90,36 @@ int main(int argc, char *argv[])
 
     // TODO: find your top/bottom/left/right neighbor using the new communicator, see MPI_Cart_shift()
     MPI_Cart_shift(comm_cart,1,1,&rank_left,&rank_right);
-    MPI_Cart_shift(comm_cart,0,1,&rank_bottom,&rank_top);   // probably bottom top!!!!!!!!
+    MPI_Cart_shift(comm_cart,0,1,&rank_top,&rank_bottom); 
 
     //printf("RankID: %i\nTop: %i\nBottom: %i\nLeft: %i\nRight: %i\n\n",rank,rank_top,rank_bottom,rank_left,rank_right);
 
 
     //  TODO: create derived datatype data_ghost, create a datatype for sending the column, see MPI_Type_vector() and MPI_Type_commit()
-    MPI_Type_vector(6,1,8,MPI_DOUBLE,&data_ghost); 
+    MPI_Type_vector(SUBDOMAIN,1,DOMAINSIZE,MPI_DOUBLE,&data_ghost); 
     MPI_Type_commit(&data_ghost);
 
     //  TODO: ghost cell exchange with the neighbouring cells in all directions
     //  use MPI_Irecv(), MPI_Send(), MPI_Wait() or other viable alternatives
 
     //  to the top
-    MPI_Irecv(&data[DOMAINSIZE*(DOMAINSIZE-1)+1],SUBDOMAIN, MPI_DOUBLE, &rank_bottom, 0, MPI_COMM_WORLD, &request);
-    MPI_Send(&data[DOMAINSIZE+1],SUBDOMAIN, MPI_DOUBLE, &rank_top, 0, MPI_COMM_WORLD);
+    MPI_Send(&data[DOMAINSIZE+1],SUBDOMAIN, MPI_DOUBLE, rank_top, 0, MPI_COMM_WORLD);
+    MPI_Irecv(&data[DOMAINSIZE*(DOMAINSIZE-1)+1],SUBDOMAIN, MPI_DOUBLE, rank_bottom, 0, MPI_COMM_WORLD, &request);
     MPI_Wait(&request, &status);
 
     //  to the bottom
-    MPI_Irecv(&data[1], SUBDOMAIN, MPI_DOUBLE, &rank_top, 0, MPI_COMM_WORLD, &request);
-    MPI_Send(&data[DOMAINSIZE*(DOMAINSIZE-2)+1], SUBDOMAIN, MPI_DOUBLE, &rank_bottom,0,MPI_COMM_WORLD);
+    MPI_Send(&data[DOMAINSIZE*(DOMAINSIZE-2)+1], SUBDOMAIN, MPI_DOUBLE, rank_bottom,0,MPI_COMM_WORLD);
+    MPI_Irecv(&data[1], SUBDOMAIN, MPI_DOUBLE, rank_top, 0, MPI_COMM_WORLD, &request);
     MPI_Wait(&request, &status);
 
     //  to the left
-    MPI_Irecv(&data[DOMAINSIZE*2-1], 1, &data_ghost, &rank_right, 0, MPI_COMM_WORLD, &request);
-    MPI_Send(&data[DOMAINSIZE+1], 1, &data_ghost, &rank_left, 0, MPI_COMM_WORLD);
+    MPI_Send(&data[DOMAINSIZE+1], 1, data_ghost, rank_left, 0, MPI_COMM_WORLD);
+    MPI_Irecv(&data[DOMAINSIZE*2-1], 1, data_ghost, rank_right, 0, MPI_COMM_WORLD, &request);
     MPI_Wait(&request, &status);
 
     //  to the right
-    MPI_Irecv(&data[DOMAINSIZE], 1, &data_ghost, &rank_left, 0, MPI_COMM_WORLD, &request);
-    MPI_Send(&data[DOMAINSIZE*2-2], 1, &data_ghost, &rank_right, 0, MPI_COMM_WORLD);
+    MPI_Send(&data[DOMAINSIZE*2-2], 1, data_ghost, rank_right, 0, MPI_COMM_WORLD);
+    MPI_Irecv(&data[DOMAINSIZE], 1, data_ghost, rank_left, 0, MPI_COMM_WORLD, &request);
     MPI_Wait(&request, &status);
 
 
@@ -150,8 +134,8 @@ int main(int argc, char *argv[])
     }
 
     // TODO: uncomment when done with tasks above
-    //MPI_Type_free(&data_ghost);
-    //MPI_Comm_free(&comm_cart);
+    MPI_Type_free(&data_ghost);
+    MPI_Comm_free(&comm_cart);
     MPI_Finalize();
 
     return 0;
