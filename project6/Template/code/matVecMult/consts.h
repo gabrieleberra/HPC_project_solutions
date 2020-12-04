@@ -14,13 +14,13 @@ typedef struct
 	MPI_Comm comm;
 } Partition;
 */
-
+/*
 typedef struct
 {
 	int start;
 	int end;
 } Domain;
-
+*/
 
 /*
 Partition createPartition(int size){
@@ -41,6 +41,7 @@ Partition createPartition(int size){
 }
 */
 
+/*
 Domain createDomain(int my_rank, int size, int n){
 	
 	Domain d;
@@ -50,7 +51,7 @@ Domain createDomain(int my_rank, int size, int n){
 
 	return d;
 }
-
+*/
 
 /*  
 	generateMatrix()
@@ -62,7 +63,7 @@ Domain createDomain(int my_rank, int size, int n){
 	Output:
 	A --> (n,n) matrix A
 */
-double *generateMatrix(int n, int size, Domain d, int my_rank) //, double start, double end
+double *generateMatrix(int n, int size) 
 	{   
 	double *A;
 	double randNum;
@@ -71,12 +72,9 @@ double *generateMatrix(int n, int size, Domain d, int my_rank) //, double start,
 	A = (double*)calloc(n * (n/size), sizeof(double));
 	srand(time(NULL));
 	
-	//printf("Start %i  end %i \n", d.start, d.end);
 	for (i=0; i< n*(n/size); i++){
 		randNum = rand();
 		A[i] = randNum;
-		//A[i] = i+my_rank;
-		//printf("%f\n",A[i] );
 	}
 
 	return A;
@@ -127,12 +125,6 @@ double *matVec(double *x, double *A, int size, int n, int my_rank)
 		MPI_Abort(MPI_COMM_WORLD, 3);
 	}
 
-	//if (my_rank==0){
-	//	for (i = 0; i< 16; i++){
-	//		printf("%f \n", x[i]);
-	//	}
-	//}
-
 	for (i = 0; i<(n/size); i++){
 		sum = 0;
 		for (j = (i*n); j<n*(i+1); j++){
@@ -141,12 +133,6 @@ double *matVec(double *x, double *A, int size, int n, int my_rank)
 		res[i] = sum;
 	}
 	
-	//if(my_rank == 0){
-	//	for (i =0; i< (n/size); i++){
-	//		printf("%f \n",res[i]);
-	//	}
-	//}
-
 	if(my_rank==0){
 		ierr = MPI_Gather(&res, (n/size), MPI_DOUBLE, x, (n/size), MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
@@ -157,12 +143,6 @@ double *matVec(double *x, double *A, int size, int n, int my_rank)
 	}else{
 		MPI_Gather(&res, (n/size), MPI_DOUBLE, NULL, 0, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 	}
-
-	//if (my_rank==0){
-	//	for (i = 0; i< 8; i++){
-	//		printf("%f \n", x[i]);
-	//	}
-	//}
 
 	return x;
 }
@@ -185,7 +165,7 @@ double randFromTo(double min, double max)
 	Output: 
 	x --> a vector 
 */
-double *generateVector(int n, int my_rank)  //, double start, double end
+double *generateVector(int n)
 {
 	double *x;
 	int i; 
@@ -197,7 +177,6 @@ double *generateVector(int n, int my_rank)  //, double start, double end
 	for (i = 0; i < n; i++){
 		randNum = rand();
 		x[i] = randNum;
-	//	x[i] = i;
 	}
 	return x;
 }

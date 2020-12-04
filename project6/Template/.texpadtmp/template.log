@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020) (preloaded format=xelatex 2020.11.7)  23 NOV 2020 17:46
+This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020) (preloaded format=xelatex 2020.11.7)  26 NOV 2020 11:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1422,23 +1422,41 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 File: images/mandel.png Graphic file (type bmp)
 <images/mandel.png>
-[5] [6]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 90.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 90.
+[5] [6] (./code/matVecMult/consts.h
+consecutive:
+) (./code/matVecMult/consts.h
+consecutive:
+[7]) (./code/matVecMult/consts.h
+consecutive:
+) (./code/matVecMult/main.c [8] [9])
+File: images/strong_scal.eps Graphic file (type eps)
+<images/strong_scal.eps>
+File: images/weak_scal.eps Graphic file (type eps)
+<images/weak_scal.eps>
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[10] [11]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 158.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 158.
  (/Users/gabo/Google Drive/Msc_Ga/HPC/HPC_project_solutions/project6/Template/.texpadtmp/template.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 90.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 90.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 158.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 158.
 Package rerunfilecheck Info: File `template.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 90.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 158.
  ) 
 Here is how much of TeX's memory you used:
- 35227 strings out of 479418
- 662214 string characters out of 5884585
- 1406899 words of memory out of 5000000
- 52062 multiletter control sequences out of 15000+600000
- 541605 words of font info for 68 fonts, out of 8000000 for 9000
+ 35395 strings out of 479418
+ 664731 string characters out of 5884585
+ 1413255 words of memory out of 5000000
+ 52198 multiletter control sequences out of 15000+600000
+ 541621 words of font info for 70 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  64i,18n,99p,10103b,2426s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on /Users/gabo/Google Drive/Msc_Ga/HPC/HPC_project_solutions/project6/Template/.texpadtmp/template.pdf (6 pages).
+Output written on /Users/gabo/Google Drive/Msc_Ga/HPC/HPC_project_solutions/project6/Template/.texpadtmp/template.pdf (11 pages).
